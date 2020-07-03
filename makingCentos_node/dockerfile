@@ -1,0 +1,27 @@
+FROM centos:centos7
+
+RUN groupadd --gid 1000 node \
+  && useradd --uid 1000 --gid node --shell /bin/bash --create-home node
+
+#ENV NODE_VERSION 10.15.1
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash \
+&& source ~/.bash_profile \
+&& nvm list-remote \
+&& nvm install 13.6.0
+COPY . .
+RUN chmod a+x choose.sh
+
+#&& nvm list
+
+#ENV PATH /root/.nvm/versions/node/v13.6.0/bin:$PATH
+
+ENV PATH /root/.nvm/versions/node/v13.6.0/bin:$PATH
+
+#&& ls -ltra
+#RUN chmod 777 /usr/local/bin/docker-entrypoint.sh \
+    #&& ln -s /usr/local/bin/docker-entrypoint.sh /
+# ENTRYPOINT ["docker-entrypoint.sh"]
+#COPY docker-entrypoint.sh /usr/local/bin/
+#ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["/bin/bash"]
+
